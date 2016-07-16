@@ -6,11 +6,8 @@ var COL_LOCATION = [0, 100, 200, 300, 400]
 /**
   * @description Represents a enemy bug
   * @constructor
-  * @param {integer} newStart - The x location of the enemy bug, in terms of pixels
-  * @param {integer} newRow - The y location of the enemy bug, in terms of actual rows
-  * @param {integer} newSpeed - The speed of the bug
   */
-var Enemy = function(newSpeed, newRow, newStart) {
+var Enemy = function() {
 	
 	// Set this.sprite to the path of the enemy image.
     this.sprite = 'images/enemy-bug.png';
@@ -56,6 +53,8 @@ Enemy.prototype.render = function() {
 
 /**
   * @description Returns a random integer between min (included) and max (excluded)
+  * @param {integer} min - the minimum integer for the range
+  * @param {integer} max - the maximum integer for the range
   * @returns An integer between min (included) and max (excluded)
   */
 Enemy.prototype.getRandomInt = function(min, max) {
