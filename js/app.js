@@ -1,7 +1,7 @@
 /* These are two arrays containing that coordinates for each combination of
 		row and column on the board */
-var row = [44, 128, 212, 296, 380];
-var col = [0, 100, 200, 300, 400]
+var ROW_LOCATION = [44, 128, 212, 296, 380];
+var COL_LOCATION = [0, 100, 200, 300, 400]
 
 /**
   * @description Represents a enemy bug
@@ -16,13 +16,13 @@ var Enemy = function(newSpeed, newRow, newStart) {
     this.sprite = 'images/enemy-bug.png';
 	
 	// Set this.x to newStart.
-	this.x = newStart;
+	this.x = this.getRandomInt(-400, -100);
 	
 	// Set this.y to newRow.
-	this.y = newRow;
+	this.y = this.getRandomInt(0, 3);
 	
 	// Set this.speed to newSpeed.
-	this.speed = newSpeed;
+	this.speed = this.getRandomInt(50, 450);
 };
 
 /**
@@ -40,9 +40,9 @@ Enemy.prototype.update = function(dt) {
 	if (this.x > 605) {
 		/* Reset the bug by bringing it back to the left of the canvas, changing its row,
 				and changing its speed. */
-		this.x = getRandomInt(-400, -100);
-		this.y = getRandomInt(0, 3);
-		this.speed = getRandomInt(100, 701);
+		this.x = this.getRandomInt(-400, -100);
+		this.y = this.getRandomInt(0, 3);
+		this.speed = this.getRandomInt(100, 701);
 	}
 };
 
@@ -51,7 +51,15 @@ Enemy.prototype.update = function(dt) {
   */
 Enemy.prototype.render = function() {
 	// Draw the enemy onto to the canvas.
-    ctx.drawImage(Resources.get(this.sprite), this.x, row[this.y]);
+    ctx.drawImage(Resources.get(this.sprite), this.x, ROW_LOCATION[this.y]);
+};
+
+/**
+  * @description Returns a random integer between min (included) and max (excluded)
+  * @returns An integer between min (included) and max (excluded)
+  */
+Enemy.prototype.getRandomInt = function(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
 };
 
 /** 
@@ -77,7 +85,7 @@ Player.prototype.update = function() {
 	// For each enemy bug,
 	for (var i = 0; i < allEnemies.length; i++) {
 		// If there is a collision between the enemy bug and the player,
-		if ((Math.abs(allEnemies[i].x - col[this.x]) < 50) && row[allEnemies[i].y] === row[this.y]) {
+		if ((Math.abs(allEnemies[i].x - COL_LOCATION[this.x]) < 50) && ROW_LOCATION[allEnemies[i].y] === ROW_LOCATION[this.y]) {
 			// Send the player back to the starting position.
 			this.resetPlayer();
 		}
@@ -89,7 +97,7 @@ Player.prototype.update = function() {
   */
 Player.prototype.render = function() {
 	// Draw the player onto the canvas.
-	ctx.drawImage(Resources.get(this.sprite), col[this.x], row[this.y]);
+	ctx.drawImage(Resources.get(this.sprite), COL_LOCATION[this.x], ROW_LOCATION[this.y]);
 };
 
 /**
@@ -160,17 +168,16 @@ Player.prototype.resetPlayer = function() {
 	this.y = 4;
 };
 
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
 var allEnemies = [
-	new Enemy(getRandomInt(50, 450), getRandomInt(0, 3), getRandomInt(-400, -100)),
-	new Enemy(getRandomInt(50, 450), getRandomInt(0, 3), getRandomInt(-400, -100)),
-	new Enemy(getRandomInt(50, 450), getRandomInt(0, 3), getRandomInt(-400, -100)),
-	new Enemy(getRandomInt(50, 450), getRandomInt(0, 3), getRandomInt(-400, -100)),
-	new Enemy(getRandomInt(50, 450), getRandomInt(0, 3), getRandomInt(-400, -100))
+	new Enemy(),
+	new Enemy(),
+	new Enemy(),
+	new Enemy(),
+	new Enemy()
 ];
 
 var player = new Player();
@@ -187,11 +194,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-/**
-  * @description Returns a random integer between min (included) and max (excluded)
-  * @returns An integer between min (included) and max (excluded)
-  */
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
